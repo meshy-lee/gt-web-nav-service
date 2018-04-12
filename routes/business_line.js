@@ -2,7 +2,7 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-03-11 15:13:44
+ * @Last Modified time: 2018-04-11 14:23:26
  */
 const express = require('express')
 const BusinessLineSql = require('./../sql/index')
@@ -26,18 +26,21 @@ router.get('/business/query', function (req, res, next) {
  * name
  */
 router.post('/business/add', function (req, res, next) {
-  console.log(req.body)
   // res.send(resBody)
   let {businessLineName, imgUrl} = req.body
   if (!businessLineName && !imgUrl) {
     res.send({
-      errInfo: 'name is not equal',
+      errInfo: '参数错误',
       result: 1
     })
   }
   const unit = new BusinessLineSql()
   unit.add(businessLineName, imgUrl).then(function (data) {
     let resBody = {msg: '添加成功', result: 0, id: data.insertId}
+    res.send(resBody)
+  }, function (err) {
+    console.log(err)
+    let resBody = {msg: err.message, result: err.errno}
     res.send(resBody)
   })
 })
@@ -52,6 +55,9 @@ router.put('/business/update', function (req, res, next) {
     let resBody = {data, ...response}
     resBody.data = data
     res.send(resBody)
+  }, function (err) {
+    let resBody = {msg: err.message, result: err.errno}
+    res.send(resBody)
   })
 })
 
@@ -62,6 +68,9 @@ router.delete('/business/delete', function (req, res, next) {
   const unit = new BusinessLineSql()
   unit.delete(req.body.id).then(function (data) {
     let resBody = {msg: '删除成功', result: 0}
+    res.send(resBody)
+  }, function (err) {
+    let resBody = {msg: err.message, result: err.errno}
     res.send(resBody)
   })
 })

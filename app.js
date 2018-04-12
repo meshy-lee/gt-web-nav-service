@@ -24,8 +24,8 @@ app.use(cookieParser())
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
 // app.use('/', index)
-app.use('/', business)
 app.use('/', commonModule)
+app.use('/', business)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

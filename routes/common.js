@@ -2,12 +2,12 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-03-11 00:04:15
+ * @Last Modified time: 2018-04-11 14:29:52
  */
 const express = require('express')
 const multer  = require('multer')
 const fs  = require('fs')
-
+const defaultJson = require('./../config/default.json')
 
 const CommonModuler = require('./../sql/common')
 const response = require('./response')
@@ -24,7 +24,6 @@ const storage = multer.diskStorage({
     // size:
     //给上传文件重命名，获取添加后缀名
     filename: function(req, file, callback){
-        // console.log(file)
         let fileformat = (file.originalname).split('.')
         callback(null, file.fieldname+'-'+Date.now()+'.'+fileformat[fileformat.length-1])
     }
@@ -50,7 +49,7 @@ router.post('/uploadImg', upload.single('file'), function (req, res, next) {
   let resBody = {
     msg: '上传成功',
     result: 0,
-    url: req.file.path //.replace('public/', '')
+    url: defaultJson.host + defaultJson.port + '/' +req.file.path //.replace('public/', '')
   }
   res.send(resBody)
   return

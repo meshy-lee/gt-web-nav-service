@@ -17,7 +17,8 @@ class BusinessLineSql {
       pool.getConnection(function (error, connection) {
         connection.query(sql, function (error, response) {
           if (error) {
-            console.log('[SELECT ERROR] - ', error.message)
+            reject(error)
+            // console.log('[SELECT ERROR] - ', error.message)
             return
           }
           resolve(response)
