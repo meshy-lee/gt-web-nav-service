@@ -51,8 +51,10 @@ router.post('/business/add', function (req, res, next) {
  */
 router.put('/business/update', function (req, res, next) {
   const unit = new BusinessLineSql()
-  unit.update(req.body.id, req.body.name).then(function (data) {
-    let resBody = {data, ...response}
+  unit.update(req.body.id, req.body.businessLineName, req.body.imgUrl).then(function (data) {
+    // let resBody = {data, ...response}
+    console.log(data)
+    let resBody = {msg: '修改成功', result: 0}
     resBody.data = data
     res.send(resBody)
   }, function (err) {
@@ -62,11 +64,13 @@ router.put('/business/update', function (req, res, next) {
 })
 
 /*
- * @add
+ * @deletd
+ * id
  */
-router.delete('/business/delete', function (req, res, next) {
+router.delete('/business/delete/:id', function (req, res, next) {
   const unit = new BusinessLineSql()
-  unit.delete(req.body.id).then(function (data) {
+  console.log(req.params)
+  unit.delete(req.params.id).then(function (data) {
     let resBody = {msg: '删除成功', result: 0}
     res.send(resBody)
   }, function (err) {

@@ -48,8 +48,8 @@ class BusinessLineSql {
       })
     })
   }
-  update (id, name) {
-    let sql = `update business_line set name='${name}' where id='${id}'`
+  update (id, name, url) {
+    let sql = `update business_line set name='${name}', url='${url}' where id='${id}'`
     console.log(sql)
     return new Promise((resolve, reject) => {
       pool.getConnection(function (err, connection) {
