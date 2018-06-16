@@ -2,7 +2,7 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-04-11 14:29:52
+ * @Last Modified time: 2018-05-08 17:52:41
  */
 const express = require('express')
 const multer  = require('multer')
@@ -46,6 +46,7 @@ router.post('/uploadImg', upload.single('file'), function (req, res, next) {
   console.log('destination: ' + req.file.destination)
   // console.log('filename: ' + req.file.filename)
   // console.log('path: ' + req.file.path)
+  process.env.BASE_URL
   let resBody = {
     msg: '上传成功',
     result: 0,
