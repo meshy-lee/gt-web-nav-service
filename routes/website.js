@@ -32,8 +32,8 @@ router.get('/website/query', function (req, res, next) {
  */
 router.post('/website/add', function (req, res, next) {
   // res.send(resBody)
-  const {name, url, imgUrl} = req.body
-  if (!name || !url || !imgUrl) {
+  const {name, url, imgUrl, belong} = req.body
+  if (!name || !url || !imgUrl || !belong) {
     res.send({
       errInfo: '参数错误',
       result: 1

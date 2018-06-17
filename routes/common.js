@@ -34,9 +34,6 @@ const upload = multer({
 
 router.post('/uploadImg', upload.single('file'), function (req, res, next) {
   console.dir(req.file)
-  // for(let i in req.body) {
-  //   console.dir(i, 1111)
-  // }
   // console.log('====================================================')
   // console.log('fieldname: ' + req.body.file)
   // console.log('originalname: ' + req.file.originalname)
@@ -46,26 +43,22 @@ router.post('/uploadImg', upload.single('file'), function (req, res, next) {
   console.log('destination: ' + req.file.destination)
   // console.log('filename: ' + req.file.filename)
   // console.log('path: ' + req.file.path)
-  process.env.BASE_URL
-  let resBody = {
+  let resBody
+  if ((req.file.size / 1024).toFixed(2) > 1024) {
+    resBody = {
+      msg: '图片不能超过1024KB！',
+      result: 1
+    }
+    res.send(resBody)
+    return
+  }
+  resBody = {
     msg: '上传成功',
     result: 0,
     url: defaultJson.host + defaultJson.port + '/' +req.file.path //.replace('public/', '')
   }
   res.send(resBody)
   return
-  // let {businessLineName, businessLineIcon} = req.body
-  // if (!businessLineName && !businessLineIcon) {
-  //   res.send({
-  //     errInfo: 'name is not equal',
-  //     result: 1
-  //   })
-  // }
-  // const unit = new CommonModuler()
-  // unit.uploadImg(businessLineName, businessLineIcon).then(function (data) {
-  //   let resBody = {msg: '上传成功', result: 0, id: data.insertId}
-  //   res.send(resBody)
-  // })
 })
 
 module.exports = router
