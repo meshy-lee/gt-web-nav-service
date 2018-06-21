@@ -2,12 +2,11 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-04-11 14:23:26
+ * @Last Modified time: 2018-06-21 16:22:30
  */
 const express = require('express')
 const WebsiteSql = require('./../sql/website_sql.js')
-const response = require('./response')
-
+const netConfig = require('./../config/net_config')
 const router = express.Router()
 /*
  * @query
@@ -15,8 +14,10 @@ const router = express.Router()
 router.get('/website/query', function (req, res, next) {
   const unit = new WebsiteSql()
   unit.query(req.query.belong).then(function (data) {
-    let resBody = {data, ...response} // JSON.parse(JSON.stringify(response))
-    resBody.data = data
+    data.forEach(ele => {
+      ele.img = 'http://' + netConfig.serviceIp + ':' + netConfig.servicePort + ele.img
+    })
+    let resBody = {data, result: 0}
     res.send(resBody)
   }, function (err) {
     res.send({
@@ -31,7 +32,6 @@ router.get('/website/query', function (req, res, next) {
  * name
  */
 router.post('/website/add', function (req, res, next) {
-  // res.send(resBody)
   const {name, url, imgUrl, belong} = req.body
   if (!name || !url || !imgUrl || !belong) {
     res.send({
@@ -62,7 +62,6 @@ router.put('/website/update', function (req, res, next) {
   const params = {...req.body}
   params.accountList = JSON.stringify(params.accountList)
   unit.update(params).then(function (data) {
-    // let resBody = {data, ...response}
     console.log(data)
     let resBody = {msg: '修改成功', result: 0}
     resBody.data = data

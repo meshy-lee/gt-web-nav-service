@@ -2,12 +2,11 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-05-08 17:52:45
+ * @Last Modified time: 2018-06-21 16:50:03
  */
 const express = require('express')
 const BusinessLineSql = require('./../sql/business_line_sql.js')
-const response = require('./response')
-
+const netConfig = require('./../config/net_config')
 const router = express.Router()
 /*
  * @query
@@ -15,8 +14,10 @@ const router = express.Router()
 router.get('/business/query', function (req, res, next) {
   const unit = new BusinessLineSql()
   unit.query(req.query.name).then(function (data) {
-    let resBody = {data, ...response} // JSON.parse(JSON.stringify(response))
-    resBody.data = data
+    data.forEach(ele => {
+      ele.url = 'http://' + netConfig.serviceIp + ':' + netConfig.servicePort + ele.url
+    })
+    let resBody = {data, result: 0}
     res.send(resBody)
   })
 })
@@ -28,7 +29,7 @@ router.get('/business/query', function (req, res, next) {
 router.post('/business/add', function (req, res, next) {
   // res.send(resBody)
   let {businessLineName, imgUrl} = req.body
-  if (!businessLineName && !imgUrl) {
+  if (!businessLineName || !imgUrl) {
     res.send({
       errInfo: '参数错误',
       result: 1
@@ -52,7 +53,6 @@ router.post('/business/add', function (req, res, next) {
 router.put('/business/update', function (req, res, next) {
   const unit = new BusinessLineSql()
   unit.update(req.body.id, req.body.businessLineName, req.body.imgUrl).then(function (data) {
-    // let resBody = {data, ...response}
     console.log(data)
     let resBody = {msg: '修改成功', result: 0}
     resBody.data = data

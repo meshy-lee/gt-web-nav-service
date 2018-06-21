@@ -7,11 +7,12 @@
 var app = require('../app')
 var debug = require('debug')('gt-nav-web:server')
 var http = require('http')
+var defaultConfig = require('./../config/default.json')
 
 /**
  * Get port from environment and store in Express.
  */
-var port = normalizePort(process.env.PORT || '4000')
+var port = normalizePort(process.env.PORT || defaultConfig.port)
 console.log(`服务运行在${port}端口`)
 app.set('port', port)
 
