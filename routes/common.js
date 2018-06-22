@@ -2,13 +2,11 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-06-21 16:05:49
+ * @Last Modified time: 2018-06-22 09:51:09
  */
 const express = require('express')
 const multer = require('multer')
 const fs = require('fs')
-const os = require('os')
-const defaultJson = require('./../config/default.json')
 const router = express.Router()
 
 /*

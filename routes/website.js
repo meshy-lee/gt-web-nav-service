@@ -2,11 +2,11 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-06-21 16:22:30
+ * @Last Modified time: 2018-06-22 09:54:50
  */
 const express = require('express')
 const WebsiteSql = require('./../sql/website_sql.js')
-const netConfig = require('./../config/net_config')
+const defaultConfig = require('./../config/default')
 const router = express.Router()
 /*
  * @query
@@ -15,7 +15,7 @@ router.get('/website/query', function (req, res, next) {
   const unit = new WebsiteSql()
   unit.query(req.query.belong).then(function (data) {
     data.forEach(ele => {
-      ele.img = 'http://' + netConfig.serviceIp + ':' + netConfig.servicePort + ele.img
+      ele.img = defaultConfig.host + ':' + defaultConfig.port + ele.img
     })
     let resBody = {data, result: 0}
     res.send(resBody)

@@ -2,11 +2,12 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-06-21 16:50:03
+ * @Last Modified time: 2018-06-22 09:54:56
  */
 const express = require('express')
-const BusinessLineSql = require('./../sql/business_line_sql.js')
-const netConfig = require('./../config/net_config')
+const BusinessLineSql = require('./../sql/business_line_sql')
+// const netConfig = require('./../config/net_config')
+const defaultConfig = require('./../config/default')
 const router = express.Router()
 /*
  * @query
@@ -15,7 +16,7 @@ router.get('/business/query', function (req, res, next) {
   const unit = new BusinessLineSql()
   unit.query(req.query.name).then(function (data) {
     data.forEach(ele => {
-      ele.url = 'http://' + netConfig.serviceIp + ':' + netConfig.servicePort + ele.url
+      ele.url = defaultConfig.host + ':' + defaultConfig.port + ele.url
     })
     let resBody = {data, result: 0}
     res.send(resBody)

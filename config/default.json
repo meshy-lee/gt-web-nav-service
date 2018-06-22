@@ -1,5 +1,5 @@
 {
-	"host": "http://192.168.25.230:",
+	"host": "http://192.168.25.230",
     "port": 4000,
     "root": "public",
     "indexPage": "index.html"
