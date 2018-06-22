@@ -2,7 +2,7 @@
  * @Author: Meshy
  * @Date: 2018-01-15 11:11:51
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-03-11 15:13:55
+ * @Last Modified time: 2018-06-22 17:47:30
  */
 
 const mysql = require('mysql')
@@ -49,7 +49,6 @@ class WebsiteSql {
     })
   }
   update (params) {
-    console.log(111111)
     let sql = `update website set name='${params.name}', url='${params.url}', type='${params.type}', img='${params.imgUrl}', belong='${params.belong}', accountList='${params.accountList}'  where id='${params.id}'`
     console.log(sql)
     return new Promise((resolve, reject) => {

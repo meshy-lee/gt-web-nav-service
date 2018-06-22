@@ -2,7 +2,7 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-06-22 13:55:15
+ * @Last Modified time: 2018-06-22 17:55:49
  */
 const express = require('express')
 const BusinessLineSql = require('./../sql/business_line_sql')
@@ -60,7 +60,6 @@ router.put('/business/update', function (req, res, next) {
     })
   }
   req.body.imgUrl = req.body.imgUrl.replace(defaultConfig.host + ':' + defaultConfig.port + '/', '')
-  console.log(req.body.imgUrl)
   unit.update(req.body.id, req.body.businessLineName, req.body.imgUrl).then(function (data) {
     console.log(data)
     let resBody = {msg: '修改成功', result: 0}

@@ -2,11 +2,12 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-06-22 13:55:01
+ * @Last Modified time: 2018-06-22 18:01:23
  */
 const express = require('express')
-const WebsiteSql = require('./../sql/website_sql.js')
+const WebsiteSql = require('./../sql/website_sql')
 const defaultConfig = require('./../config/default')
+const validate = require('./../utils/validate')
 const router = express.Router()
 /*
  * @query
@@ -57,26 +58,35 @@ router.post('/website/add', function (req, res, next) {
  * id
  */
 router.put('/website/update', function (req, res, next) {
-  const unit = new WebsiteSql()
-  console.log(req.body)
   const params = {...req.body}
-  if (!params.name || !params.url || !params.type || !params.imgUrl || !params.belong || !params.accountList || !params.id) {
+  const afterVal = new Promise(function(resolve, reject) {
+    !validate.isString(params.name, 12) && reject()
+    !validate.isUrl(params.url) && reject()
+    !validate.isNum(params.type) && reject()
+    !validate.isUrl(params.imgUrl) && reject()
+    !validate.isNum(params.belong) && reject()
+    !params.accountList.length && reject()
+    !validate.isNum(params.id) && reject()
+    resolve()
+  })
+  afterVal.then(valRes => {
+    params.imgUrl = params.imgUrl.replace(defaultConfig.host + ':' + defaultConfig.port + '/', '')
+    params.accountList = JSON.stringify(params.accountList)
+    const unit = new WebsiteSql()
+    unit.update(params).then(function (data) {
+      let resBody = {msg: '修改成功', result: 0}
+      resBody.data = data
+      res.send(resBody)
+    }, function (err) {
+      let resBody = {msg: err.message, result: err.errno}
+      res.send(resBody)
+    })
+  }, errRes => {
     res.send({
       errInfo: '参数错误',
       result: 1
     })
-  }
-  params.imgUrl = params.imgUrl.replace(defaultConfig.host + ':' + defaultConfig.port + '/', '')
-  params.accountList = JSON.stringify(params.accountList)
-  unit.update(params).then(function (data) {
-    console.log(data)
-    let resBody = {msg: '修改成功', result: 0}
-    resBody.data = data
-    res.send(resBody)
-  }, function (err) {
-    let resBody = {msg: err.message, result: err.errno}
-    res.send(resBody)
-  })
+  }) 
 })
 
 /*
