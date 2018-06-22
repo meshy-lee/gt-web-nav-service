@@ -2,7 +2,7 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-06-22 09:51:09
+ * @Last Modified time: 2018-06-22 10:40:04
  */
 const express = require('express')
 const multer = require('multer')
@@ -30,9 +30,9 @@ const upload = multer({
 
 router.post('/uploadImg', upload.single('file'), function(req, res, next) {
   let resBody
-  if ((req.file.size / 1024).toFixed(2) > 1024) {
+  if ((req.file.size / 1024).toFixed(2) > 50) {
     resBody = {
-      msg: '图片不能超过1024KB！',
+      msg: '图片不能超过50KB！',
       result: 1
     }
     res.send(resBody)

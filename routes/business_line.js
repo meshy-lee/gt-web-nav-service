@@ -2,7 +2,7 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-06-22 09:54:56
+ * @Last Modified time: 2018-06-22 10:40:39
  */
 const express = require('express')
 const BusinessLineSql = require('./../sql/business_line_sql')
@@ -16,7 +16,7 @@ router.get('/business/query', function (req, res, next) {
   const unit = new BusinessLineSql()
   unit.query(req.query.name).then(function (data) {
     data.forEach(ele => {
-      ele.url = defaultConfig.host + ':' + defaultConfig.port + ele.url
+      ele.url = defaultConfig.host + ':' + defaultConfig.port + '/' + ele.url
     })
     let resBody = {data, result: 0}
     res.send(resBody)
