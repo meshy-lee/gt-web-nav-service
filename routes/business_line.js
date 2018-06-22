@@ -2,7 +2,7 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-06-22 10:40:39
+ * @Last Modified time: 2018-06-22 13:55:15
  */
 const express = require('express')
 const BusinessLineSql = require('./../sql/business_line_sql')
@@ -53,6 +53,14 @@ router.post('/business/add', function (req, res, next) {
  */
 router.put('/business/update', function (req, res, next) {
   const unit = new BusinessLineSql()
+  if (!req.body.id || !req.body.businessLineName || !req.body.imgUrl) {
+    res.send({
+      errInfo: '参数错误',
+      result: 1
+    })
+  }
+  req.body.imgUrl = req.body.imgUrl.replace(defaultConfig.host + ':' + defaultConfig.port + '/', '')
+  console.log(req.body.imgUrl)
   unit.update(req.body.id, req.body.businessLineName, req.body.imgUrl).then(function (data) {
     console.log(data)
     let resBody = {msg: '修改成功', result: 0}
@@ -71,6 +79,12 @@ router.put('/business/update', function (req, res, next) {
 router.delete('/business/delete/:id', function (req, res, next) {
   const unit = new BusinessLineSql()
   console.log(req.params)
+  if (!req.params.id) {
+    res.send({
+      errInfo: '参数错误',
+      result: 1
+    })
+  }
   unit.delete(req.params.id).then(function (data) {
     let resBody = {msg: '删除成功', result: 0}
     res.send(resBody)

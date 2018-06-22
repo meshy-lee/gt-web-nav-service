@@ -2,7 +2,7 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-06-22 10:40:44
+ * @Last Modified time: 2018-06-22 13:55:01
  */
 const express = require('express')
 const WebsiteSql = require('./../sql/website_sql.js')
@@ -60,6 +60,13 @@ router.put('/website/update', function (req, res, next) {
   const unit = new WebsiteSql()
   console.log(req.body)
   const params = {...req.body}
+  if (!params.name || !params.url || !params.type || !params.imgUrl || !params.belong || !params.accountList || !params.id) {
+    res.send({
+      errInfo: '参数错误',
+      result: 1
+    })
+  }
+  params.imgUrl = params.imgUrl.replace(defaultConfig.host + ':' + defaultConfig.port + '/', '')
   params.accountList = JSON.stringify(params.accountList)
   unit.update(params).then(function (data) {
     console.log(data)
@@ -79,6 +86,12 @@ router.put('/website/update', function (req, res, next) {
 router.delete('/website/delete/:id', function (req, res, next) {
   const unit = new WebsiteSql()
   console.log(req.params)
+  if (!req.params.id) {
+    res.send({
+      errInfo: '参数错误',
+      result: 1
+    })
+  }
   unit.delete(req.params.id).then(function (data) {
     let resBody = {msg: '删除成功', result: 0}
     res.send(resBody)
