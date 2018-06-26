@@ -2,7 +2,7 @@
  * @Author: Meshy
  * @Date: 2018-01-14 01:54:35
  * @Last Modified by: Meshy
- * @Last Modified time: 2018-06-22 18:01:23
+ * @Last Modified time: 2018-06-26 15:11:29
  */
 const express = require('express')
 const WebsiteSql = require('./../sql/website_sql')
@@ -63,7 +63,7 @@ router.put('/website/update', function (req, res, next) {
     !validate.isString(params.name, 12) && reject()
     !validate.isUrl(params.url) && reject()
     !validate.isNum(params.type) && reject()
-    !validate.isUrl(params.imgUrl) && reject()
+    !validate.isString(params.imgUrl) && reject() // 此处校验是否为空即可
     !validate.isNum(params.belong) && reject()
     !params.accountList.length && reject()
     !validate.isNum(params.id) && reject()
